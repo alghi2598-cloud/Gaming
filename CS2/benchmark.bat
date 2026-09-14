@@ -1,6 +1,6 @@
 @(set "0=%~f0" ') & powershell -nop -c .([scriptblock]::create((type $env:0 -raw))) & exit /b ');.{
 @'
- generate Benchmark.cfg v2026.05.19 -Run from CS2 in-game console with: BB
+ generate Benchmark.cfg v2026.09.14 -Run from CS2 in-game console with: BB
  print last VProf from console.log if using launch option: -condebug
  print cl_showfps 4 stats from prof_mapname.csv output
  useful to pick a fps_max at the > 99% mark and benchmark again
@@ -74,12 +74,14 @@ dir "$GAME\prof_*.csv" | sort LastWriteTime -Descending | foreach {
 $cfg = "$GAME\cfg\autoexec.cfg"; $content = (get-content $cfg -raw -ea 0)+''
 $bb  = 'alias bb "alias set v2;sv_cheats 1;exec_async benchmark"'; if ($content -notlike "*$bb*") { add-content $cfg "`r`n$bb" }
 $bx  = 'alias bx "alias set vx;sv_cheats 1;exec_async benchmark"'; if ($content -notlike "*$bx*") { add-content $cfg "`r`n$bx" }
+$b5  = 'alias b5 "alias set v5;sv_cheats 1;exec_async benchmark"'; if ($content -notlike "*$b5*") { add-content $cfg "`r`n$b5" }
 
-$ver = 'v2026.05.19'
+$ver = 'v2026.09.14'
 if (((get-content "$GAME\cfg\benchmark.cfg" -raw -ea 0)+'') -notlike "*$ver*") { set-content "$GAME\cfg\benchmark.cfg" @'
-echo  Benchmark.cfg by AveYo       /// v2026.05.19       /// Run with: alias set v2;sv_cheats 1;exec_async benchmark
+echo  Benchmark.cfg by AveYo       /// v2026.09.14       /// Run with: alias set v2;sv_cheats 1;exec_async benchmark
 alias bb "alias set v2;sv_cheats 1;exec_async benchmark" /// Add this line in autoexec.cfg to just enter: BB
 alias bx "alias set vx;sv_cheats 1;exec_async benchmark" /// Can also loop 10 times with: BX
+alias b5 "alias set v5;sv_cheats 1;exec_async benchmark" /// Can also loop  5 times with: B5
 /// [CHANGE] v2 script requires the secondary benchmark2.cfg in the cfg folder to wait for map load
 
 alias go "alias new;map de_ancient       gamemode=casual customgamemode=0 nomapvalidation=1 loopback=0"
@@ -87,12 +89,13 @@ alias go "alias new;map de_ancient_night gamemode=casual customgamemode=0 nomapv
 alias v1 "alias new go; alias set f8; alias wait exec_async benchmark;alias done exec_async benchmark2;player_teamplayedlast 0"
 alias v2 "v1;alias loop x0;grep . [Console] counter = ;incrementvar sv_pausable 1 999 1;fps_max;alias rt mp_roundtime_defuse 2"
 alias vx "v1;alias loop x1;grep . [Console] counter = ;incrementvar sv_pausable 1 1 999;fps_max;alias rt mp_roundtime_defuse 11"
+alias v5 "v1;alias loop x6;grep . [Console] counter = ;incrementvar sv_pausable 1 1 999;fps_max;alias rt mp_roundtime_defuse 6"
 set
 log_flags Console +donotecho
 log_flags General InputService Developer DeveloperVerbose VScript BuildSparseShadowTree stringtables +donotecho
 log_flags SignonState SteamNetSockets NetSteamConn Networking Client Server Host HostStateManager +donotecho
 log_flags ResourceSystem MaterialSystem RenderSystem WorldRenderer SceneSystem SceneFileCache AnimResource +donotecho
-log_flags SteamAudio SndOperators SoundSystem SoundSystemLowLevel EngineServiceManager +donotecho
+log_flags SteamAudio SndOperators SoundSystem SoundSystemLowLevel EngineServiceManager CS2BombDamage +donotecho
 log_flags "SV CommandQueue" "CL CommandQueue" "Command Queue Events" "Command Queue SAMPLES" "Localization System" +donotecho
 log_flags Prediction Shooting Missions RenderPipelineCsgo +donotecho
 log_color Console FFFFFFFF
@@ -233,9 +236,10 @@ toggle player_teamplayedlast ";wait" "2" ";done" "3" ";done" /// sv_full_alltalk
 
 $ver2 = 'v2026.05.19'
 if (((get-content "$GAME\cfg\benchmark2.cfg" -raw -ea 0)+'') -notlike "*$ver2*") { set-content "$GAME\cfg\benchmark2.cfg" @'
-echo Benchmark.cfg by AveYo       /// v2026.05.19        /// Run with: alias set v2;sv_cheats 1;exec_async benchmark
+echo  Benchmark.cfg by AveYo       /// v2026.09.14       /// Run with: alias set v2;sv_cheats 1;exec_async benchmark
 alias bb "alias set v2;sv_cheats 1;exec_async benchmark" /// Add this line in autoexec.cfg to just enter: BB
 alias bx "alias set vx;sv_cheats 1;exec_async benchmark" /// Can also loop 10 times with: BX
+alias b5 "alias set v5;sv_cheats 1;exec_async benchmark" /// Can also loop  5 times with: B5
 /// [CHANGE] v2 script requires the secondary benchmark2.cfg in the cfg folder to wait for map load
 
 /// ADD BOTS
@@ -837,7 +841,7 @@ sleep 3000
 //log_flags RenderPipelineCsgo "Localization System" -donotecho /// not resetting these
 log_flags  "Command Queue SAMPLES" "Command Queue Events" "SV CommandQueue" "CL CommandQueue" -donotecho
 log_flags Prediction Shooting Missions +donotecho
-log_flags SteamAudio SndOperators SoundSystem SoundSystemLowLevel EngineServiceManager -donotecho
+log_flags SteamAudio SndOperators SoundSystem SoundSystemLowLevel EngineServiceManager CS2BombDamage -donotecho
 log_flags ResourceSystem MaterialSystem RenderSystem WorldRenderer SceneSystem SceneFileCache AnimResource -donotecho
 log_flags SignonState SteamNetSockets NetSteamConn Networking Client Server Host HostStateManager -donotecho
 log_flags InputService Developer DeveloperVerbose VScript BuildSparseShadowTree stringtables General -donotecho
