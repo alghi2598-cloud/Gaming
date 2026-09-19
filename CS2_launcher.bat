@@ -34,14 +34,14 @@ $video = @{                                                          ##        S
 # "setting.shaderquality"                            = "0"           ##  0     smooth shadows fps--
 # "setting.videocfg_particle_detail"                 = "0"           ##  0     smooth smokes fps--
 # "setting.videocfg_ao_detail"                       = "0"           ##  0     ambient oclussion fps--
-# "setting.videocfg_hdr_detail"                      = "3"           ##  -1    HDR quality: -1 | performance 8bit noise: 3
+# "setting.videocfg_hdr_detail"                      = "-1"           ##  -1    HDR quality: -1 | performance 8bit noise: 3
 # "setting.videocfg_fsr_detail"                      = "0"           ##  0     FSR quality: 2 | balanced: 3 | minecraft: 4
-# "setting.r_low_latency"                            = "2"           ##  1
+# "setting.r_low_latency"                            = "1"           ##  1
 }
 $convars = @{
 # "r_fullscreen_gamma"                               = "2.2"         ##  2.2   brightness slider - works on windowed too
 # "r_player_visibility_mode"                         = "0"           ##  1     kinda useless
-# "r_drawtracers_firstperson"                        = "0"           ##  1     tracers
+# "r_drawtracers_firstperson"                        = "1"           ##  1     tracers
   "engine_no_focus_sleep"                            = "0"           ##  20    power saving while alt-tab
   "cl_input_enable_raw_keyboard"                     = "0"           ##  0     prevent keyboard issues
   "r_show_build_info"                                = "1"           ##  1     build info is a must when reporting issues
@@ -56,7 +56,7 @@ $extra_launch_options = @()
 $force_screen    = -1
 
 ##  override fullscreen mode: exclusive 1 desktop-friendly 0
-$force_exclusive = 0
+$force_exclusive = 1
 
 ##  override fullscreen optimizations (FSO): enable 1 disable 0
 $enable_fso      = 1
